@@ -1,5 +1,6 @@
 #9.4.1
 import pytest
+import os
 def choose_word(file_path, index):
     """
     Choose a word from a file based on the specified index and count the number of unique words.
@@ -17,6 +18,9 @@ def choose_word(file_path, index):
     
     if not file_path:
         raise ValueError("File name cannot be an empty string.")
+    
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File '{file_path}' does not exist.")
         
     with open(file_path, 'r') as file:
         file_string = file.read()
@@ -27,3 +31,4 @@ def choose_word(file_path, index):
     sum_word = len(set_file)
     
     return word_index    
+  

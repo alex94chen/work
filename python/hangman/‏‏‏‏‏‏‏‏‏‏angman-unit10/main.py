@@ -24,7 +24,7 @@ def main():
     while num_of_tries <= MAX_TRIES:
         
         letter_guessed = input('Guess a letter: ').lower()
-        
+        print(f"letter_guessed: {letter_guessed.encode('ascii')}")
         if not try_update_letter_guessed(letter_guessed, old_letters_guessed):
             continue
     
