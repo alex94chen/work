@@ -9,7 +9,7 @@ class BigThing ():
         else:
             return len(self._x) 
         
-class BigCat(BigThing ):
+class BigCat(BigThing):
     def __init__(self, x=0, weight = 0):
         super().__init__(x)
         self._weight = weight
