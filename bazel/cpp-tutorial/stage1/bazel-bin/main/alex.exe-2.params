@@ -1,0 +1,8 @@
+/nologo
+/OUT:bazel-out/x64_windows-fastbuild/bin/main/alex.exe
+bazel-out/x64_windows-fastbuild/bin/main/_objs/alex/alex.obj
+/SUBSYSTEM:CONSOLE
+/MACHINE:X64
+/DEFAULTLIB:msvcrt.lib
+/DEBUG:FASTLINK
+/INCREMENTAL:NO

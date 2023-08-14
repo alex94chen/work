@@ -1,9 +1,6 @@
 
 
 
-#1.3.2
-
-
 #1.3.1
 def intersection(list_1, list_2):
     return [i for i in set(list_1) if i in set(list_2)]
