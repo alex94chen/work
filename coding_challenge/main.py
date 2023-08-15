@@ -1,32 +1,33 @@
 from fastapi import FastAPI, HTTPException
+import redis
 
 app = FastAPI()
+# Connect to the Redis database
+redis_db = redis.StrictRedis(host='my_red', port=6379, db=0, decode_responses=True) 
 
-tasks = []  #List: Tuple (title, description)
 
 @app.post("/create_task/")
 async def create_task(title: str, description: str):
     task = (title, description)
-    tasks.append(task)
+    # Store the task in the Redis database
+    redis_db.rpush("tasks", str(task))    
     return {"message": "Task created successfully"}
-
 
 @app.get("/get_tasks/")
 async def get_tasks():
-    if not tasks:
-        return "No tasks to perform"
-    formatted_tasks = ' \n '.join([f"title: {title} - description: {description}" for title, description in tasks])
+    # Retrieve tasks from the Redis database
+    formatted_tasks = '\n'.join(redis_db.lrange("tasks", 0, -1))
     return formatted_tasks
 
 
-@app.delete("/remove_task/{title}/{description}")  # Notice the URL parameters
-async def remove_task(title: str, description: str):
-    if not tasks:
-        return {"message": "No tasks to remove"}
 
+
+@app.delete("/remove_task/{title}/{description}") 
+async def remove_task(title: str, description: str):
     task_to_remove = (title, description)
-    if task_to_remove in tasks:
-        tasks.remove(task_to_remove)
+    # Remove task from the Redis database
+    removed_count = redis_db.lrem("tasks", 1, str(task_to_remove))
+    if removed_count > 0:
         return {"message": "Task removed successfully", "removed_task": task_to_remove}
     else:
         raise HTTPException(status_code=404, detail="Task not found")
